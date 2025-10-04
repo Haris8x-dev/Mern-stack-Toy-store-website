@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import axios from "axios";
+import { toast } from "react-toastify"; // if you're using react-toastify
 
 const Contact = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -34,20 +36,24 @@ const Contact = () => {
     };
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Add your form submission logic here
-    console.log("Form submitted:", formData);
+
+    try {
+      await axios.post("http://localhost:4000/api/messages", formData, {
+        withCredentials: true,
+      });
+      toast.success("✅ Thank you for your message!");
+      setFormData({ name: "", email: "", subject: "", message: "" }); // clear form
+    } catch (err) {
+      toast.error("❌ Failed to send message. Try again later.");
+    }
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
 
   return (
     <main className="w-full min-h-screen bg-gradient-to-br from-purple-900 via-purple-950 to-black relative overflow-hidden">

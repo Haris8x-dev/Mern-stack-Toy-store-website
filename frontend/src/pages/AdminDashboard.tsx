@@ -12,6 +12,8 @@ import {
   TrendingUp,
   Package,
   DollarSign,
+  Inbox,
+  Trash2,
 } from "lucide-react";
 import api from "../api/axiosInstance";
 import { toast } from "react-toastify";
@@ -50,6 +52,9 @@ const Dashboard = () => {
   const [deletingUser, setDeletingUser] = useState<UserType | null>(null);
   const [editForm, setEditForm] = useState({ name: "", email: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [messages, setMessages] = useState<any[]>([]);
+  const [loadingMessages, setLoadingMessages] = useState(true);
+  const [showConfirm, setShowConfirm] = useState(false);
   const auth = useAuth();
   const navigate = useNavigate();
   const [stats, setStats] = useState({
@@ -58,6 +63,16 @@ const Dashboard = () => {
     totalSales: 0,
   });
 
+  const handleClearMessages = async () => {
+    try {
+      await api.delete("/messages/clear", { withCredentials: true });
+      setMessages([]); // clear locally
+      setShowConfirm(false);
+    } catch (err) {
+      console.error("Failed to clear messages:", err);
+    }
+  };
+
   const handleNavigate = () => {
     navigate("/");
   };
@@ -65,6 +80,21 @@ const Dashboard = () => {
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
   };
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        const res = await api.get("/messages", { withCredentials: true });
+        setMessages(res.data);
+      } catch (err) {
+        console.error("Error fetching messages:", err);
+      } finally {
+        setLoadingMessages(false);
+      }
+    };
+
+    fetchMessages();
+  }, []);
 
   const chartData = [
     { name: "Products", value: stats.totalProducts },
@@ -1027,24 +1057,77 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              <div className="relative group">
+              {/* Clear Messages Card */}
+              <div className="relative group mb-6">
                 <div className="absolute -inset-0.5 bg-gradient-to-r from-orange-500 to-red-600 rounded-3xl blur opacity-30 group-hover:opacity-40 transition duration-500"></div>
                 <div className="relative bg-gradient-to-br from-purple-900/50 to-black/50 backdrop-blur-2xl rounded-3xl p-8 border border-purple-500/20">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center">
-                      <Settings className="w-6 h-6" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-white">
-                      System Configuration
-                    </h3>
-                  </div>
-                  <p className="text-purple-300/70 text-lg">
-                    Configure your dashboard preferences, store settings,
-                    notifications, and more. Advanced customization options
-                    coming soon.
+                  <h3 className="text-2xl font-bold text-white mb-4">
+                    Clear All Messages
+                  </h3>
+                  <p className="text-purple-300/70 text-lg mb-4">
+                    You can clear all customer messages from the system. This
+                    action cannot be undone.
                   </p>
+                  <button
+                    onClick={() => setShowConfirm(true)}
+                    className="bg-gradient-to-r from-red-500 to-pink-600 text-white font-bold px-6 py-3 rounded-xl hover:scale-105 transition-all"
+                  >
+                    <Trash2 className="inline-block mr-2" /> Clear All Messages
+                  </button>
                 </div>
               </div>
+
+              {/* Messages List */}
+              <div className="mb-8">
+                <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                  <Inbox className="w-6 h-6 text-white" /> Customer Messages
+                </h3>
+                {loadingMessages ? (
+                  <p className="text-purple-300">Loading messages...</p>
+                ) : messages.length === 0 ? (
+                  <p className="text-purple-400/70">No messages found</p>
+                ) : (
+                  <div className="space-y-4">
+                    {messages.map((msg) => (
+                      <div
+                        key={msg._id}
+                        className="p-4 bg-white/5 border border-white/10 rounded-xl text-white"
+                      >
+                        <p className="font-bold">
+                          {msg.name} ({msg.email})
+                        </p>
+                        <p className="text-purple-300 text-sm">{msg.subject}</p>
+                        <p className="mt-2">{msg.message}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Confirmation Modal */}
+              {showConfirm && (
+                <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+                  <div className="bg-gradient-to-br from-purple-900 to-black p-6 rounded-2xl shadow-lg border border-purple-500/30 max-w-sm w-full">
+                    <h2 className="text-xl text-white font-bold mb-4">
+                      Are you sure you want to clear all messages?
+                    </h2>
+                    <div className="flex justify-end gap-4">
+                      <button
+                        onClick={() => setShowConfirm(false)}
+                        className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-500"
+                      >
+                        No
+                      </button>
+                      <button
+                        onClick={handleClearMessages}
+                        className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500"
+                      >
+                        Yes
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>

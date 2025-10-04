@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  Trash2,
   Minus,
   Plus,
   ArrowLeft,
@@ -13,7 +12,7 @@ import {
   Shield,
   Tag,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import api from "../api/axiosInstance";
 import Navbar from "../components/Navbar";
 
@@ -96,10 +95,6 @@ const Cart = () => {
   const total = subtotal + tax + shipping;
   const savings = subtotal * 0.15; // Example savings
 
-  const handleCheckout = () => {
-    navigate("/checkout");
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-950 to-black">
@@ -147,7 +142,7 @@ const Cart = () => {
             
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2 bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
+                <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2 bg-gradient-to-r from-white to-purple-200 bg-clip-text">
                   Shopping Cart
                 </h1>
                 <div className="flex items-center gap-4">
@@ -386,14 +381,14 @@ const Cart = () => {
                     </div>
                   </div>
 
-                  <button
-                    onClick={handleCheckout}
+                  <NavLink
+                    to="/checkoutpage"
                     className="relative w-full py-4 flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-xl font-bold text-lg transition-all duration-300 shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 hover:scale-[1.02] overflow-hidden group"
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                     <CreditCard className="w-5 h-5 relative z-10" />
                     <span className="relative z-10">Proceed to Checkout</span>
-                  </button>
+                  </NavLink>
 
                   {/* Trust Badges */}
                   <div className="mt-6 pt-6 border-t border-white/10">

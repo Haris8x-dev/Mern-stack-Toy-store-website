@@ -250,12 +250,11 @@ const Home = () => {
               favorite figures and toys
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <button className="px-8 py-4 bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 text-black font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg">
+              <NavLink
+              to={"/figures"}
+              className="px-8 py-4 bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 text-black font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg">
                 🎯 Browse Collection
-              </button>
-              <button className="px-8 py-4 border-2 border-white/40 hover:border-white/60 text-white hover:bg-white/10 rounded-xl transition-all duration-300 hover:scale-105">
-                📞 Contact Us
-              </button>
+              </NavLink>
             </div>
           </div>
         </div>

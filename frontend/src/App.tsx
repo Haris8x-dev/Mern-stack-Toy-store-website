@@ -11,6 +11,8 @@ import AdminDashboard from "./pages/AdminDashboard";
 import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
 import WishlistPage from "./routes/WishlistPage";
 import Cart from "./pages/Cart";
+import CheckoutPage from "./routes/checkoutPage";
+import { Check } from "lucide-react";
 
 function App() {
   const router = createBrowserRouter([
@@ -35,6 +37,10 @@ function App() {
       path: "/cart",
     },
     {
+      element: <CheckoutPage/>,
+      path: "/checkoutpage",
+    },
+    {
       element: (
         <ProtectedAdminRoute>
           <AdminDashboard />
@@ -53,7 +59,7 @@ function App() {
     {
       element: (
         <ProtectedRoute>
-          <WishlistPage/>
+          <WishlistPage />
         </ProtectedRoute>
       ),
       path: "/wishlist",

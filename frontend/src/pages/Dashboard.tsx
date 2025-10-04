@@ -14,6 +14,9 @@ const Dashboard = () => {
   const [statsVisible, setStatsVisible] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [wishlistCount, setWishlistCount] = useState(0);
+  const [cartItems, setCartItems] = useState<any[]>([]);
+  const [cartCount, setCartCount] = useState(0);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const auth = useAuth();
 
@@ -25,6 +28,21 @@ const Dashboard = () => {
       clearTimeout(timer);
       clearTimeout(statsTimer);
     };
+  }, []);
+
+  useEffect(() => {
+    const fetchCart = async () => {
+      try {
+        const res = await api.get("/cart", { withCredentials: true });
+        setCartItems(res.data);
+        setCartCount(res.data.length); // ✅ just track number of items
+      } catch (err) {
+        console.error("Error fetching cart:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCart();
   }, []);
 
   useEffect(() => {
@@ -178,7 +196,7 @@ const Dashboard = () => {
               {
                 icon: "🛒",
                 label: "Total Orders",
-                value: "0 Orders",
+                value: `${cartCount} Orders`, // ✅ dynamic count from backend
                 gradient: "from-yellow-500 to-orange-600",
                 bgGradient: "from-yellow-500/20 to-orange-600/20",
                 delay: "200ms",

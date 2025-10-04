@@ -110,3 +110,24 @@ export const removeFromCart = async (req, res) => {
       .json({ message: "Failed to remove item", error: err.message });
   }
 };
+
+// Clear cart for logged-in user (remove from DB entirely)
+export const clearCart = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    // Delete the entire cart document for this user
+    const cart = await Cart.findOneAndDelete({ user: userId });
+
+    if (!cart) {
+      return res.status(404).json({ message: "Cart not found" });
+    }
+
+    res.json({
+      message: "Cart cleared and removed from database successfully",
+    });
+  } catch (err) {
+    console.error("Error clearing cart:", err.message);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};

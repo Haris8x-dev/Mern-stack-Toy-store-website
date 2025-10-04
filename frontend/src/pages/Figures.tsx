@@ -290,8 +290,27 @@ const Figures = () => {
                           }`}
                         />
                       </button>
-                      <button className="flex-1 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 rounded-xl py-4 px-6 flex items-center justify-center gap-3 shadow-lg shadow-pink-500/30 transition-all hover:scale-105">
-                        <ShoppingCart className="w-6 h-6 text-white" />
+                      <button
+                        onClick={async () => {
+                          if (!selectedFigure) return;
+                          try {
+                            await api.post(
+                              "/cart/add",
+                              { figureId: selectedFigure._id, quantity: 1 },
+                              { withCredentials: true }
+                            );
+                            toast.success(
+                              `${selectedFigure.name} added to cart!`
+                            );
+                          } catch (err) {
+                            console.error("Error adding to cart:", err);
+                            toast.error("Failed to add item to cart");
+                          }
+                        }}
+                        className="flex-1 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 rounded-xl py-4 px-6 flex items-center justify-center gap-3 shadow-lg shadow-pink-500/30 transition-all hover:scale-105"
+                      >
+                        {" "}
+                        <ShoppingCart className="w-6 h-6 text-white" />{" "}
                         <span className="text-white font-bold">
                           Add to Cart
                         </span>

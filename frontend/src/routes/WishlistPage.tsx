@@ -3,12 +3,14 @@ import { Heart, ShoppingCart, Trash2, Sparkles, Star } from "lucide-react";
 import api from "../api/axiosInstance";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { toast } from "react-toastify";
 
 const WishlistPage = () => {
   const [wishlist, setWishlist] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isHeaderVisible, setIsHeaderVisible] = useState(false);
   const [areItemsVisible, setAreItemsVisible] = useState(false);
+  const [selectedFigure, setSelectedFigure] = useState<any | null>(null);
 
   const handleRemove = async (toyId: string) => {
     try {
@@ -254,7 +256,22 @@ const WishlistPage = () => {
 
                       {/* Action buttons on hover */}
                       <div className="absolute bottom-3 left-3 right-3 flex gap-2 transition-all duration-300 transform translate-y-2 ">
-                        <button className="flex-1 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 rounded-xl py-2.5 px-4 flex items-center justify-center gap-2 text-white font-semibold shadow-lg transition-all hover:scale-105">
+                        <button
+                          onClick={async () => {
+                            try {
+                              await api.post(
+                                "/cart/add",
+                                { figureId: toy._id, quantity: 1 },
+                                { withCredentials: true }
+                              );
+                              toast.success(`${toy.name} added to cart! 🛒`);
+                            } catch (err) {
+                              console.error("Error adding to cart:", err);
+                              toast.error("Failed to add item to cart");
+                            }
+                          }}
+                          className="flex-1 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 rounded-xl py-2.5 px-4 flex items-center justify-center gap-2 text-white font-semibold shadow-lg transition-all hover:scale-105"
+                        >
                           <ShoppingCart className="w-4 h-4" />
                           <span className="text-sm">Add to Cart</span>
                         </button>

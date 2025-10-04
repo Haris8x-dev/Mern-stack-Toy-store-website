@@ -7,7 +7,8 @@ import cookieParser from "cookie-parser";
 import figureRoutes from "./routes/figureRoutes.js";
 import statsRoutes from "./routes/statsRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
-import wishlistRoutes from './routes/wishlistRoutes.js'
+import wishlistRoutes from "./routes/wishlistRoutes.js";
+import cartRoutes from "./routes/cartRoutes.js";
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use("/api/figures", figureRoutes);
 app.use("/api/stats", statsRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/wishlist", wishlistRoutes);
+app.use("/api/cart", cartRoutes);
 
 // root
 app.get("/", (req, res) => res.send("hello from backend !"));

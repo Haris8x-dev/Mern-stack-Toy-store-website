@@ -1,69 +1,113 @@
-# 🧸 Toy Kingdom - MERN Stack Toy Store Website
+# 🧸 Toy Kingdom – MERN Stack Toy Store
 
-Toy Kingdom is a full-stack MERN (MongoDB, Express, React, Node.js) based toy store web application.
-It allows users to browse, save toys to their wishlist, manage their cart, and place orders.
-Admins can add or manage toy products via a dedicated admin panel.
+A **full-stack e-commerce application** built with the **MERN stack + TypeScript**, featuring **secure authentication (JWT + Google One-Click Sign-In)**, **wishlist & cart management**, **checkout with billing**, and **Cloudinary integration** for image storage.
 
-🚀 Features
-User Side
-🔐 Authentication (JWT / Google Sign-In)
-❤️ Wishlist – save & remove favorite toys
-🛒 Cart & Orders – add to cart and track purchases
-⭐ Ratings & Reviews for toys
-📱 Fully Responsive UI (TailwindCSS + animations)
-Admin Side
-➕ Add new toy products
-🛠 Manage and update toy details
-🗑 Remove products from the catalog
-🛠 Tech Stack
-Frontend: React, TypeScript, TailwindCSS, Vite
-Backend: Node.js, Express.js, MongoDB, JWT
-Database: MongoDB (Mongoose ODM)
-State Management: React hooks & Context API
-Authentication: JWT + Google Auth
-Other Tools: Axios, Lucide Icons, Toastify
-⚙️ Setup & Installation
-Clone the Repository
-git clone https://github.com/Haris8x-dev/Mern-stack-Toy-store-website.git
+---
+
+## 🚀 Tech Stack
+
+### Frontend
+
+* ⚛️ **React + TypeScript**
+* 🎨 **Tailwind CSS** (responsive & modern UI)
+* 🎭 **Lucide React** (icons)
+* 🌐 Axios + fetch for API calls
+
+### Backend
+
+* 🟢 **Node.js + Express.js**
+* 📦 **MongoDB + Mongoose**
+* 🔑 **JWT Authentication**
+* 🌍 **Google OAuth** (Google Identity Services SDK integration) (One click Google button Signin)
+* ☁️ **Cloudinary** for image upload/storage
+
+---
+
+## ✨ Features
+
+* 👤 **Authentication & Authorization**
+
+  * Secure **JWT-based login/signup**
+  * **Google One-Click Sign-In** using Google SDK
+  * Role-based access (**Admin** & **User**)
+
+* 🛍️ **Product Management**
+
+  * Fetch toys/figures from MongoDB
+  * Cloudinary-powered image hosting
+
+* 💖 **Wishlist**
+
+  * Save/remove items
+  * Works for both Local and Google users
+
+* 🛒 **Shopping Cart**
+
+  * Add/remove products
+  * Quantity increment/decrement
+  * Automatic billing calculations (subtotal, tax, total)
+
+* 💳 **Checkout**
+
+  * Billing details form (name, email, address, card, contact)
+  * Secure payment simulation
+  * Cart auto-clears after successful checkout
+
+* 📩 **Customer Messages**
+
+  * Users can send inquiries via contact form
+  * Stored in MongoDB
+  * Admin can view or clear all messages
+
+* ⚙️ **Admin Panel**
+
+  * Manage products, messages, and settings
+  * Clear all messages with confirmation modal
+
+---
+
+## 🛠️ Installation
+
+Clone the repo:
+
+```bash
+git clone https://github.com/your-username/Mern-stack-Toy-store-website.git
 cd Mern-stack-Toy-store-website
+```
 
-Backend Setup
+### Backend Setup
+
+```bash
 cd backend
 npm install
+```
 
+Create a `.env` file:
 
-Create a .env file in /backend and add:
-
-PORT=4000
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_secret_key
+```
+MONGO_URI=your_mongo_connection
+JWT_SECRET=your_jwt_secret
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
 GOOGLE_CLIENT_ID=your_google_client_id
-
+```
 
 Run backend:
 
-npm run dev
+```bash
+npm run start
+```
 
-Frontend Setup
-cd ../frontend
+### Frontend Setup
+
+```bash
+cd frontend
 npm install
 npm run dev
+```
 
-Open the app in your browser at:
-👉 http://localhost:5173
-📂 Project Structure
-Toy-Kingdom/
-│── backend/      # Express + MongoDB REST API
-│── frontend/     # React + Tailwind UI
-│── .env          # Environment variables (ignored in git)
-│── README.md
+---
+## 👨‍💻 Author
 
-🤝 Contributing
-
-Pull requests are welcome! For major changes, please open an issue first to discuss what you’d like to improve.
-
-📜 License
-
-This project is licensed under the MIT License – feel free to use and modify.
-
-✨ Built with ❤️ by Haris
+Developed by **Haris** 🚀

@@ -286,7 +286,7 @@ const goToDashboard = () => {
         <footer className="p-6 border-t border-white/20 relative z-10">
         {user ? (
         <button
-          onClick={() => navigate("/dashboard")}
+          onClick={goToDashboard}
           className="flex xl:hidden px-6 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 
                              border border-white/30 hover:border-white/40
                              transition-all duration-300 font-medium text-white

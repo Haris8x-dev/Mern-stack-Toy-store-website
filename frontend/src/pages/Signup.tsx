@@ -32,116 +32,115 @@ const SignIn = () => {
     });
   };
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  try {
-    if (isLogin) {
-      // LOGIN
-      await api.post(
-        "/auth/login",
-        {
-          email: formData.email,
-          password: formData.password,
-        },
-        { withCredentials: true }
-      );
+    try {
+      if (isLogin) {
+        // LOGIN
+        await api.post(
+          "/auth/login",
+          {
+            email: formData.email,
+            password: formData.password,
+          },
+          { withCredentials: true }
+        );
 
-      // ✅ Fetch profile after login
-      const { data } = await api.get("/auth/profile", {
-        withCredentials: true,
-      });
-      auth.setUser(data?.user ?? data);
+        // ✅ Fetch profile after login
+        const { data } = await api.get("/auth/profile", {
+          withCredentials: true,
+        });
+        auth.setUser(data?.user ?? data);
 
-      toast.success("Login successful!");
-      if (data.isAdmin) {
-        navigate("/admindashboard"); // 🚀 admin
+        toast.success("Login successful!");
+        if (data.isAdmin) {
+          navigate("/admindashboard"); // 🚀 admin
+        } else {
+          navigate("/dashboard"); // normal user
+        }
       } else {
-        navigate("/dashboard"); // normal user
-      }
-    } else {
-      // REGISTER
-      await api.post(
-        "/auth/register",
-        {
-          name: formData.name,
-          email: formData.email,
-          password: formData.password,
-          confirmPassword: formData.confirmPassword,
-        },
-        { withCredentials: true }
-      );
+        // REGISTER
+        await api.post(
+          "/auth/register",
+          {
+            name: formData.name,
+            email: formData.email,
+            password: formData.password,
+            confirmPassword: formData.confirmPassword,
+          },
+          { withCredentials: true }
+        );
 
-      // ✅ Fetch profile after register
-      const { data } = await api.get("/auth/profile", {
-        withCredentials: true,
-      });
-      auth.setUser(data?.user ?? data);
+        // ✅ Fetch profile after register
+        const { data } = await api.get("/auth/profile", {
+          withCredentials: true,
+        });
+        auth.setUser(data?.user ?? data);
 
-      toast.success("Account created!");
-      if (data.isAdmin) {
-        navigate("/admindashboard");
-      } else {
-        navigate("/dashboard");
+        toast.success("Account created!");
+        if (data.isAdmin) {
+          navigate("/admindashboard");
+        } else {
+          navigate("/dashboard");
+        }
       }
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || "Something went wrong");
     }
-  } catch (err: any) {
-    toast.error(err.response?.data?.message || "Something went wrong");
-  }
-};
+  };
 
   const handleForgotPassword = (e: React.FormEvent) => {
     e.preventDefault();
     // Forgot password logic will go here
   };
 
-const codeClientRef = useRef<any>(null);
+  const codeClientRef = useRef<any>(null);
 
-useEffect(() => {
-  if (window.google) {
-    codeClientRef.current = window.google.accounts.oauth2.initCodeClient({
-      client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-      scope: "openid email profile",
-      ux_mode: "popup",
-      callback: async (resp: { code?: string; error?: string }) => {
-        if (resp.error || !resp.code) return;
+  useEffect(() => {
+    if (window.google) {
+      codeClientRef.current = window.google.accounts.oauth2.initCodeClient({
+        client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+        scope: "openid email profile",
+        ux_mode: "popup",
+        callback: async (resp: { code?: string; error?: string }) => {
+          if (resp.error || !resp.code) return;
 
-        try {
-          // 1️⃣ Hit Google auth backend route to exchange code & set cookie
-          await api.post(
-            "/auth/google",
-            { code: resp.code },
-            { withCredentials: true }
-          );
+          try {
+            // 1️⃣ Hit Google auth backend route to exchange code & set cookie
+            await api.post(
+              "/auth/google",
+              { code: resp.code },
+              { withCredentials: true }
+            );
 
-          // 2️⃣ Then fetch the Google profile from backend
-          const { data } = await api.get("/auth/google/profile", {
-            withCredentials: true,
-          });
+            // 2️⃣ Then fetch the Google profile from backend
+            const { data } = await api.get("/auth/google/profile", {
+              withCredentials: true,
+            });
 
-          // 3️⃣ Save user in AuthContext
-          auth.setUser(data);
+            // 3️⃣ Save user in AuthContext
+            auth.setUser(data);
 
-         // 4️⃣ Redirect based on role
-        toast.success("Signed in with Google!");
-        if (data.isAdmin) {
-          navigate("/admindashboard");  // 🚀 admin redirect
-        } else {
-          navigate("/dashboard");       // normal user redirect
-        }
-        } catch (err: any) {
-          console.error("Google login error:", err);
-          toast.error("Google login failed");
-        }
-      },
-    });
-  }
-}, []);
+            // 4️⃣ Redirect based on role
+            toast.success("Signed in with Google!");
+            if (data.isAdmin) {
+              navigate("/admindashboard"); // 🚀 admin redirect
+            } else {
+              navigate("/dashboard"); // normal user redirect
+            }
+          } catch (err: any) {
+            console.error("Google login error:", err);
+            toast.error("Google login failed");
+          }
+        },
+      });
+    }
+  }, []);
 
-const handleGoogleSignIn = () => {
-  codeClientRef.current?.requestCode();
-};
-
+  const handleGoogleSignIn = () => {
+    codeClientRef.current?.requestCode();
+  };
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-purple-700 via-purple-800 to-black relative overflow-hidden flex flex-col items-center justify-center p-4">

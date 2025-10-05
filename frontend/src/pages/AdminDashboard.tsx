@@ -8,7 +8,7 @@ import {
   BadgeCheck,
   Database,
   Users,
-  Settings,
+  Mail,
   TrendingUp,
   Package,
   DollarSign,
@@ -63,6 +63,13 @@ const Dashboard = () => {
     totalSales: 0,
   });
 
+  const chartData = [
+    { name: "Products", value: stats.totalProducts },
+    { name: "Users", value: stats.activeUsers },
+    { name: "Sales", value: stats.totalSales },
+  ];
+
+  // {Inquiry Messages clear Function} ===👇
   const handleClearMessages = async () => {
     try {
       await api.delete("/messages/clear", { withCredentials: true });
@@ -73,14 +80,17 @@ const Dashboard = () => {
     }
   };
 
+  // {Navigation}  ===👇
   const handleNavigate = () => {
     navigate("/");
   };
 
+  // {Mobile Admin left panel view}  ===👇
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
   };
 
+  // {Fetching all the User Inquiry Messages}  ===👇
   useEffect(() => {
     const fetchMessages = async () => {
       try {
@@ -96,12 +106,7 @@ const Dashboard = () => {
     fetchMessages();
   }, []);
 
-  const chartData = [
-    { name: "Products", value: stats.totalProducts },
-    { name: "Users", value: stats.activeUsers },
-    { name: "Sales", value: stats.totalSales },
-  ];
-
+  // {Fetching the stats ( Total number of Users + Products)}  ===👇
   const fetchStats = async () => {
     try {
       const { data } = await api.get("/stats", { withCredentials: true });
@@ -111,6 +116,7 @@ const Dashboard = () => {
     }
   };
 
+  // {Fetching all the figures}  ===👇
   const fetchFigures = async () => {
     try {
       const { data } = await api.get("/figures", { withCredentials: true });
@@ -120,10 +126,7 @@ const Dashboard = () => {
     }
   };
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
+  // {Fetching all the Users}  ===👇
   const fetchUsers = async () => {
     try {
       const { data } = await api.get("/users", { withCredentials: true });
@@ -134,6 +137,11 @@ const Dashboard = () => {
     }
   };
 
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  // {Updating Current Product Details}  ===👇
   const handleEdit = (toy: any) => {
     setEditingToy({ ...toy });
   };
@@ -165,6 +173,7 @@ const Dashboard = () => {
     }
   };
 
+  // {Deleting a product from the database + /Figures}  ===👇
   const handleDelete = async (id: string) => {
     try {
       await api.delete(`/figures/${id}`, { withCredentials: true });
@@ -176,6 +185,7 @@ const Dashboard = () => {
     }
   };
 
+  // { Adding a product to dataBase + /Figures}  ===👇
   const handleSubmit = async () => {
     if (!productName || !description || !price) {
       toast.error("⚠️ Please fill all required fields");
@@ -317,9 +327,9 @@ const Dashboard = () => {
               gradient: "from-sky-500 to-blue-600",
             },
             {
-              id: "settings",
-              icon: Settings,
-              label: "Settings",
+              id: "inquiry",
+              icon: Mail,
+              label: "Inquiry Messages",
               gradient: "from-orange-500 to-red-600",
             },
           ].map((item) => {
@@ -1038,7 +1048,7 @@ const Dashboard = () => {
           )}
 
           {/* Settings Panel */}
-          {activePanel === "settings" && (
+          {activePanel === "inquiry" && (
             <div className="max-w-5xl mx-auto">
               {/* Header */}
               <div className="mb-8">
@@ -1048,10 +1058,10 @@ const Dashboard = () => {
                   </div>
                   <div>
                     <h2 className="text-4xl font-extrabold text-white">
-                      Settings
+                      Inquiry Messages
                     </h2>
                     <p className="text-purple-300/60 text-lg mt-1">
-                      Configure your dashboard and store preferences
+                      Get Users Inquiry Messages about product or Demand for any Product.
                     </p>
                   </div>
                 </div>

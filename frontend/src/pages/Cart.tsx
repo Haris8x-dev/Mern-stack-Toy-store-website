@@ -65,12 +65,12 @@ const Cart = () => {
   };
 
   const handleRemove = async (id: string) => {
-    setRemovingItems(prev => new Set(prev).add(id));
+    setRemovingItems((prev) => new Set(prev).add(id));
     try {
       await api.delete(`/cart/remove/${id}`, { withCredentials: true });
       setTimeout(() => {
         setCartItems((prev) => prev.filter((item) => item._id !== id));
-        setRemovingItems(prev => {
+        setRemovingItems((prev) => {
           const newSet = new Set(prev);
           newSet.delete(id);
           return newSet;
@@ -78,7 +78,7 @@ const Cart = () => {
       }, 300);
     } catch (err) {
       console.error("Failed to remove item:", err);
-      setRemovingItems(prev => {
+      setRemovingItems((prev) => {
         const newSet = new Set(prev);
         newSet.delete(id);
         return newSet;
@@ -108,7 +108,9 @@ const Cart = () => {
               <div className="inline-block animate-spin rounded-full h-16 w-16 border-t-3 border-b-3 border-purple-400 shadow-[0_0_30px_rgba(168,85,247,0.6)]"></div>
               <div className="absolute inset-0 animate-ping rounded-full h-16 w-16 border border-purple-400/30"></div>
             </div>
-            <p className="mt-6 text-purple-300 font-medium text-lg">Loading your cart...</p>
+            <p className="mt-6 text-purple-300 font-medium text-lg">
+              Loading your cart...
+            </p>
           </div>
         </div>
       </div>
@@ -139,7 +141,7 @@ const Cart = () => {
               </div>
               <span className="text-sm font-medium">Continue Shopping</span>
             </button>
-            
+
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2 bg-gradient-to-r from-white to-purple-200 bg-clip-text">
@@ -148,7 +150,8 @@ const Cart = () => {
                 <div className="flex items-center gap-4">
                   <p className="text-purple-300/80 flex items-center gap-2">
                     <Package className="w-4 h-4" />
-                    {cartItems.length} {cartItems.length === 1 ? 'item' : 'items'} in cart
+                    {cartItems.length}{" "}
+                    {cartItems.length === 1 ? "item" : "items"} in cart
                   </p>
                   {cartItems.length > 0 && (
                     <span className="text-green-400 text-sm font-medium flex items-center gap-1">
@@ -169,9 +172,12 @@ const Cart = () => {
                   <ShoppingBag className="w-12 h-12 text-purple-300" />
                 </div>
               </div>
-              <h3 className="text-2xl font-bold text-white mb-2">Your cart is empty</h3>
+              <h3 className="text-2xl font-bold text-white mb-2">
+                Your cart is empty
+              </h3>
               <p className="text-gray-400 mb-6 text-center max-w-md">
-                Looks like you haven't added any items yet. Start exploring our collection!
+                Looks like you haven't added any items yet. Start exploring our
+                collection!
               </p>
               <button
                 onClick={() => navigate("/")}
@@ -191,11 +197,19 @@ const Cart = () => {
                     <div className="flex items-center gap-3">
                       <TruckIcon className="w-5 h-5 text-purple-400" />
                       <div>
-                        <p className="text-white font-medium">You're ${(100 - subtotal).toFixed(2)} away from free shipping!</p>
+                        <p className="text-white font-medium">
+                          You're ${(100 - subtotal).toFixed(2)} away from free
+                          shipping!
+                        </p>
                         <div className="w-48 h-2 bg-white/10 rounded-full mt-2 overflow-hidden">
-                          <div 
+                          <div
                             className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all duration-500"
-                            style={{ width: `${Math.min((subtotal / 100) * 100, 100)}%` }}
+                            style={{
+                              width: `${Math.min(
+                                (subtotal / 100) * 100,
+                                100
+                              )}%`,
+                            }}
                           />
                         </div>
                       </div>
@@ -207,12 +221,12 @@ const Cart = () => {
                   <div
                     key={item._id}
                     className={`group relative overflow-hidden bg-gradient-to-br from-white/[0.08] to-white/[0.03] border border-white/10 rounded-2xl p-5 hover:from-white/[0.12] hover:to-white/[0.06] hover:border-purple-500/30 transition-all duration-500 backdrop-blur-sm ${
-                      removingItems.has(item._id) ? 'opacity-50 scale-95' : ''
+                      removingItems.has(item._id) ? "opacity-50 scale-95" : ""
                     }`}
                   >
                     {/* Hover gradient effect */}
                     <div className="absolute inset-0 bg-gradient-to-r from-purple-600/0 via-purple-600/5 to-pink-600/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-                    
+
                     <div className="relative flex gap-4">
                       {/* Enhanced Image */}
                       <div className="flex-shrink-0 relative group">
@@ -241,7 +255,8 @@ const Cart = () => {
                               {item.figure.name}
                             </h3>
                             <p className="text-purple-300/70 text-sm line-clamp-2">
-                              {item.figure.description || "Premium collectible figure"}
+                              {item.figure.description ||
+                                "Premium collectible figure"}
                             </p>
                           </div>
                           <button
@@ -261,11 +276,21 @@ const Cart = () => {
                                 key={i}
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
-                                fill={i < item.figure.rating ? "url(#star-gradient)" : "#374151"}
+                                fill={
+                                  i < item.figure.rating
+                                    ? "url(#star-gradient)"
+                                    : "#374151"
+                                }
                                 className="w-4 h-4"
                               >
                                 <defs>
-                                  <linearGradient id="star-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                  <linearGradient
+                                    id="star-gradient"
+                                    x1="0%"
+                                    y1="0%"
+                                    x2="100%"
+                                    y2="100%"
+                                  >
                                     <stop offset="0%" stopColor="#facc15" />
                                     <stop offset="100%" stopColor="#fb923c" />
                                   </linearGradient>
@@ -273,7 +298,9 @@ const Cart = () => {
                                 <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.782 1.402 8.178L12 18.897l-7.336 3.853 1.402-8.178L.132 9.21l8.2-1.192z" />
                               </svg>
                             ))}
-                            <span className="text-xs text-purple-300/60 ml-1">({item.figure.rating}.0)</span>
+                            <span className="text-xs text-purple-300/60 ml-1">
+                              ({item.figure.rating}.0)
+                            </span>
                           </div>
                           {item.figure.stock && item.figure.stock < 10 && (
                             <span className="text-xs font-medium text-orange-400 bg-orange-400/10 px-2 py-1 rounded-full">
@@ -283,13 +310,18 @@ const Cart = () => {
                         </div>
 
                         {/* Price and Quantity - Enhanced */}
-                        <div className="flex items-center justify-between">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
                           <div className="flex items-center gap-3">
                             <p className="text-2xl font-bold bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent">
                               ${(item.figure.price * item.quantity).toFixed(2)}
                             </p>
                             <p className="text-sm text-gray-400 line-through">
-                              ${(item.figure.price * item.quantity * 1.2).toFixed(2)}
+                              $
+                              {(
+                                item.figure.price *
+                                item.quantity *
+                                1.2
+                              ).toFixed(2)}
                             </p>
                           </div>
 
@@ -333,9 +365,11 @@ const Cart = () => {
                         <Package className="w-4 h-4 text-purple-400" />
                         Subtotal
                       </span>
-                      <span className="font-medium">${subtotal.toFixed(2)}</span>
+                      <span className="font-medium">
+                        ${subtotal.toFixed(2)}
+                      </span>
                     </div>
-                    
+
                     <div className="flex justify-between text-gray-300">
                       <span className="flex items-center gap-2">
                         <TruckIcon className="w-4 h-4 text-purple-400" />
@@ -349,7 +383,7 @@ const Cart = () => {
                         )}
                       </span>
                     </div>
-                    
+
                     <div className="flex justify-between text-gray-300">
                       <span className="flex items-center gap-2">
                         <Tag className="w-4 h-4 text-purple-400" />
@@ -357,17 +391,19 @@ const Cart = () => {
                       </span>
                       <span className="font-medium">${tax.toFixed(2)}</span>
                     </div>
-                    
+
                     {savings > 0 && (
                       <div className="flex justify-between text-green-400">
                         <span className="flex items-center gap-2">
                           <Sparkles className="w-4 h-4" />
                           Total Savings
                         </span>
-                        <span className="font-medium">-${savings.toFixed(2)}</span>
+                        <span className="font-medium">
+                          -${savings.toFixed(2)}
+                        </span>
                       </div>
                     )}
-                    
+
                     <div className="border-t border-white/20 pt-4">
                       <div className="flex justify-between text-white text-xl font-bold">
                         <span>Total</span>
@@ -411,18 +447,26 @@ const Cart = () => {
                     <div className="flex items-start gap-3">
                       <TruckIcon className="w-5 h-5 text-purple-400 mt-0.5" />
                       <div>
-                        <p className="text-white font-medium text-sm">Free Shipping on $100+</p>
-                        <p className="text-purple-300/60 text-xs mt-1">Estimated delivery in 3-5 days</p>
+                        <p className="text-white font-medium text-sm">
+                          Free Shipping on $100+
+                        </p>
+                        <p className="text-purple-300/60 text-xs mt-1">
+                          Estimated delivery in 3-5 days
+                        </p>
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-400/20 rounded-xl p-4">
                     <div className="flex items-start gap-3">
                       <Shield className="w-5 h-5 text-green-400 mt-0.5" />
                       <div>
-                        <p className="text-white font-medium text-sm">30-Day Return Policy</p>
-                        <p className="text-green-300/60 text-xs mt-1">100% money-back guarantee</p>
+                        <p className="text-white font-medium text-sm">
+                          30-Day Return Policy
+                        </p>
+                        <p className="text-green-300/60 text-xs mt-1">
+                          100% money-back guarantee
+                        </p>
                       </div>
                     </div>
                   </div>

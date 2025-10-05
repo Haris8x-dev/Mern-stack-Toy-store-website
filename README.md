@@ -1,3 +1,10 @@
+## 📸 🧸 Toy Kingdom – MERN Stack Toy Store Screenshots  
+
+### 🏠 Web View display  
+![Web View](./frontend/public/Haris-store.jpg)  
+
+
+
 # 🧸 Toy Kingdom – MERN Stack Toy Store
 
 A **full-stack e-commerce application** built with the **MERN stack + TypeScript**, featuring **secure authentication (JWT + Google One-Click Sign-In)**, **wishlist & cart management**, **checkout with billing**, and **Cloudinary integration** for image storage.
